@@ -1,4 +1,4 @@
-# jOOQ with Flyway, Scala and Play-Framework Example
+# jOOQ with Flyway, Scala and Play-Framework Example
 
 Dieses Beispielprojekt demonstriert die Verwendung von jOOQ in einer Scala / Play-Framework Umgebung. 
 
