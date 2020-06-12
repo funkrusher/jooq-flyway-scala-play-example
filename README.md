@@ -22,9 +22,7 @@ es kann jedoch durch Verwendung des jOOQ-Codes (Autogenerierte Klassen) zu Situa
 
 Man könnte mit Mühe versuchen die Evolutions als Task in der "build.sbt" einzurichten.
 Alternativ könnte man auch Flyway nutzen, welches auch nicht ideal aber zumindest etwas zugänglicher ist.
-
-Siehe: https://github.com/flyway/flyway-play
-
+siehe: https://davidmweber.github.io/flyway-sbt-docs/
 
 # Vorbereitung
 
