@@ -39,7 +39,7 @@ run
 ```
 Mit `clean` löscht man alles in seinem target-Folder. Mit `flywayMigrate` befüllt man seine testdb-Datenbank mit den erforderlichen Tabellen und Testdaten. Mit `generateJOOQ` erzeugt man in seinem target-Folder für diese testdb-Datenbank alle erforderlichen autogenerierten Klassen, die im Programmcode bereits verwendet und referenziert werden. Mit `run` startet man die Play-Applikation.
 
-Dies sollte alles ohne Fehler ausgeführt werden. Nun kann man im Webbrowser die folgenden URLs ansteuern und jOOQ zu testen:
+Dies sollte alles ohne Fehler ausgeführt werden. Nun kann man im Webbrowser die folgenden URLs ansteuern um jOOQ zu testen:
 
 ```
 http://localhost:9000/
