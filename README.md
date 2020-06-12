@@ -10,7 +10,6 @@ Dieses Beispielprojekt demonstriert die Verwendung von jOOQ in einer Scala / Pla
 Aufgrund folgender Punkte könnte es Sinn machen jOOQ anstellte von Slick zu verwenden und dieses Projekt kann dabei helfen solche Anwendungsfälle zu testen:
 - Performance
 - Nachvollziehbarkeit des ausgeführten SQL
-- Verwendung tiefergehender SQL-Konzepte (Transaktionen, Batch-Inserts,..)
 
 für Details, siehe auch: https://scalac.io/scala-slick-experience/
 
