@@ -1,5 +1,10 @@
 # jOOQ with Flyway, Scala and Play-Framework Example
 
+This Example-Project is based on (and written with help of) the following article:
+- https://blog.jooq.org/2016/01/14/reactive-database-access-part-3-using-jooq-with-scala-futures-and-actors/
+
+----
+
 Dieses Beispielprojekt demonstriert die Verwendung von jOOQ in einer Scala / Play-Framework Umgebung. 
 
 Aufgrund folgender Punkte könnte es Sinn machen jOOQ anstellte von Slick zu verwenden und dieses Projekt kann dabei helfen solche Anwendungsfälle zu testen:
