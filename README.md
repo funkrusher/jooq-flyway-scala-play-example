@@ -43,10 +43,12 @@ Dies sollte alles ohne Fehler ausgeführt werden. Nun kann man im Webbrowser die
 
 ```
 http://localhost:9000/
-http://localhost:9000/book
-http://localhost:9000/author
-http://localhost:9000/test1
-http://localhost:9000/test2
-http://localhost:9000/test3
+http://localhost:9000/book          (Bücher anzeigen, anlegen, löschen)
+http://localhost:9000/author        (Autoren anzeigen, anlegen, löschen)
+http://localhost:9000/test1         (Komplexer Select mit Join)
+http://localhost:9000/test2         (5000 Autoren mit Batch-Insert einfügen)
+http://localhost:9000/test3         (Alle Autoren anhand eines LIKE löschen)
+http://localhost:9000/test4         (Transaktions-Beispiel)
+http://localhost:9000/test5         (Transaktions-Beispiel für Fehlerfall / Rollback)
 ```
 
