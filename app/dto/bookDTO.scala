@@ -1,15 +1,16 @@
 package dto
 
+import java.util.stream.Collectors
+
 import database.DB
 import generated.Tables._
 import generated.tables.records.BookRecord
 import javax.inject.{Inject, Singleton}
 import org.jooq.impl.DSL.select
-import org.jooq.{Record3, Result}
+import org.jooq.{Record, Record3, Result}
 import org.jooq.scalaextensions.Conversions._
 
 import collection.JavaConverters._
-
 import scala.concurrent.Future
 
 @Singleton
@@ -152,5 +153,28 @@ class bookDTO @Inject()(db: DB) {
       .or(BOOK.TITLE in("O Alquimista", "Brida"))
       .fetch
   }
+
+
+  /**
+   * Fetches all books that belong to the given book-store names
+   *
+   * @return list of books
+   */
+  def fetchAllByBookStoreNames(names: Seq[String]): Future[Seq[BookRecord]] = db.query { dsl =>
+    dsl
+      .select(BOOK.fields.toList.asJava)
+      .from(BOOK)
+      .join(BOOK_TO_BOOK_STORE).on(BOOK_TO_BOOK_STORE.BOOK_ID.eq(BOOK.ID))
+      .join(BOOK_STORE).on(BOOK_STORE.NAME.eq(BOOK_TO_BOOK_STORE.NAME))
+      .where(BOOK_STORE.NAME.in(names.asJava))
+      .fetch().asScala
+      .map({
+        case (record) =>
+          // because of the join-fetch we must resolve our book-record from the abstract result,
+          // that possibly contains data from multiple (joined) tables.
+          record.into(BOOK).into(classOf[BookRecord])
+      })
+  }
+
 
 }

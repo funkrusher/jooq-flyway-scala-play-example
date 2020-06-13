@@ -1,12 +1,15 @@
 package dto
 
+import java.util
+import java.util.stream.Collectors
+
 import database.DB
 import generated.Tables._
-import generated.tables.records.{AuthorRecord, BookRecord}
+import generated.tables.records.{AuthorRecord, BookRecord, BookStoreRecord}
 import javax.inject.{Inject, Singleton}
-import org.jooq.impl.DSL.select
+import org.jooq.impl.DSL._
 import org.jooq.scalaextensions.Conversions._
-import org.jooq.{DSLContext, Record3, Result}
+import org.jooq.{DSLContext, Record, Record3, Result}
 
 import scala.collection.JavaConverters._
 import scala.concurrent.Future
@@ -45,7 +48,7 @@ class authorDTO @Inject()(db: DB) {
    * @param id
    * @return author
    */
-  def fetchOneById(dsl:DSLContext, id: Int): AuthorRecord = {
+  def fetchOneById(dsl: DSLContext, id: Int): AuthorRecord = {
     dsl
       .selectFrom(AUTHOR)
       .where(AUTHOR.ID.eq(id))
@@ -152,6 +155,26 @@ class authorDTO @Inject()(db: DB) {
       .execute();
   }
 
+
+  /**
+   * Fetches all authors that belong to the given book-ids
+   *
+   * @return list of authors
+   */
+  def fetchAllByBookIds(ids: Seq[Integer]): Future[Seq[AuthorRecord]] = db.query { dsl =>
+    dsl
+      .select(AUTHOR.fields.toList.asJava)
+      .from(AUTHOR)
+      .join(BOOK).on(BOOK.AUTHOR_ID.eq(AUTHOR.ID))
+      .where(BOOK.ID.in(ids.asJava))
+      .fetch().asScala
+      .map({
+        case (record) =>
+          // because of the join-fetch we must resolve our author-record from the abstract result,
+          // that possibly contains data from multiple (joined) tables.
+          record.into(AUTHOR).into(classOf[AuthorRecord])
+      })
+  }
 
 
 }
