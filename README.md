@@ -26,7 +26,7 @@ siehe: https://davidmweber.github.io/flyway-sbt-docs/
 
 # Vorbereitung
 
-Eine neue MariaDB-Datenbank "testdb" in seinem lokalen XAMPP (LAMP) anlegen.
+Eine neue MariaDB-Datenbank "testdb" in seinem lokalen XAMPP (LAMP) anlegen. XAMPP wird mit MariaDB ausgeliefert, daher habe ich auch überall die MariaDB-Treiber verwendet. Wenn man eine andere Datenbank benötigt, ist dies recht einfach möglich, indem man an allen relevanten Stellen in der "build.sbt", "application.conf", "testdb.xml" und der Klasse "app.database.DB.scala" die entsprechenden Einstellungen für seinen Datenbanktyp anpasst.
 
 Die Login-Daten für diese Datenbank in der `conf/application.conf` eintragen.  
 
