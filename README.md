@@ -19,8 +19,9 @@ Leider ist die "Evolutions" Funktionalität des Play-Frameworks so ausgelegt, da
 
 es kann jedoch durch Verwendung des jOOQ-Codes (Autogenerierte Klassen) zu Situationen kommen, in denen der jOOQ-Code im "target"-Verzeichnis gelöscht wurde und somit die Applikation nicht gestartet werden kann, da sie nicht kompiliert. Der jOOQ-Code kann aber nur neu erzeugt werden, wenn die Datenbank im passenden Zustand ist (der oft erst nach Ausführung der Evolutions erreicht ist). Dies ist ein Henne-Ei Problem.
 
-Man könnte mit Mühe versuchen die Evolutions als Task in der "build.sbt" einzurichten.
-Alternativ könnte man auch Flyway nutzen, welches auch nicht ideal aber zumindest etwas zugänglicher ist.
+Soweit ich weiß, gibt es keine einfache Möglichkeit die Evolutions als Task in der "build.sbt" einzurichten, bzw. so einzurichten dass sie nicht den kompletten Classpath des Projekts benötigen, was ein kompilieren des Projekts erzwingt was wir wegen dem jOOQ-Codegenerator zu diesem Zeitpunkt nicht tun dürfen.
+
+Daher nutze ich hier Flyway, welches auch nicht ideal aber zumindest ermöglicht, dass man ein SBT-Task einrichten kann, was ohne den Classpath auskommt und daher in einem Zustand ausgeführt werden kann, in welchem der Code nicht kompiliert werden muss.
 siehe: https://davidmweber.github.io/flyway-sbt-docs/
 
 # Vorbereitung
