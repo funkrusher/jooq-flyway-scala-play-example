@@ -21,7 +21,7 @@ es kann jedoch durch Verwendung des jOOQ-Codes (Autogenerierte Klassen) zu Situa
 
 Soweit ich weiß, gibt es keine einfache Möglichkeit die Evolutions als Task in der "build.sbt" einzurichten, bzw. so einzurichten dass sie nicht den kompletten Classpath des Projekts benötigen, was ein kompilieren des Projekts erzwingt was wir wegen dem jOOQ-Codegenerator zu diesem Zeitpunkt nicht tun dürfen.
 
-Daher nutze ich hier Flyway, welches auch nicht ideal aber zumindest ermöglicht, dass man ein SBT-Task einrichten kann, was ohne den Classpath auskommt und daher in einem Zustand ausgeführt werden kann, in welchem der Code nicht kompiliert werden muss.
+Daher nutze ich hier Flyway, welches aus anderen Gründen auch nicht ideal ist (Benennungsschema der SQL-Migrationen verursacht GIT-Konflikte bei mehreren Entwicklern -- dies wird beispielsweise in Liquibase besser gemacht), aber zumindest ermöglicht, dass man ein SBT-Task einrichten kann, was ohne den Classpath auskommt und daher in einem Zustand ausgeführt werden kann, in welchem der Code nicht kompiliert werden muss.
 siehe: https://davidmweber.github.io/flyway-sbt-docs/
 
 # Vorbereitung
