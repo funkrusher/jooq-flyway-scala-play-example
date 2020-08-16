@@ -9,7 +9,7 @@
 
      <h1>Add book</h1>
 
-     @form(action = helper.CSRF(routes.BookController.addBook())) {
+     @form(action = helper.CSRF(routes.BookController.jooqAddBook())) {
        @inputText(bookAddForm("author_id"))
        @inputText(bookAddForm("title"))
        @inputText(bookAddForm("published_in"))
@@ -19,7 +19,7 @@
 
      <h1>Delete book</h1>
 
-     @form(action = helper.CSRF(routes.BookController.deleteBook())) {
+     @form(action = helper.CSRF(routes.BookController.jooqDeleteBook())) {
        @inputText(bookDeleteForm("id"))
        <input type="submit" value="Submit">
      }

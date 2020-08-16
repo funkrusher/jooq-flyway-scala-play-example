@@ -1,7 +1,7 @@
 package controllers
 
 import database.DB
-import dto.bookDTO
+import dto.jooqBookDTO
 import generated.tables.records.BookRecord
 import javax.inject.{Inject, Singleton}
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
@@ -13,24 +13,24 @@ import play.api.i18n.I18nSupport
 @Singleton
 class BookController @Inject()(
                                 cc: ControllerComponents,
-                                db: DB, bookDTO: bookDTO) extends AbstractController(cc) with I18nSupport {
+                                db: DB, jooqBookDTO: jooqBookDTO) extends AbstractController(cc) with I18nSupport {
 
   /**
    * fetch all books and show them as view
    *
    * @return books-view
    */
-  def fetchAllBooks: Action[AnyContent] = Action.async { implicit request =>
+  def jooqFetchAllBooks: Action[AnyContent] = Action.async { implicit request =>
 
     // fetch all books from the database
     val result = for {
-      all <- bookDTO.fetchAll()
+      all <- jooqBookDTO.fetchAll()
     } yield all
 
     result.map({
       books =>
         // render html-view (transform the fetched jOOQ-Records to HTML)
-        Ok(views.html.fetchAllBooks(Html(books.formatHTML()), BookAddForm.form, BookDeleteForm.form))
+        Ok(views.html.jooqFetchAllBooks(Html(books.formatHTML()), BookAddForm.form, BookDeleteForm.form))
     })
   }
 
@@ -39,7 +39,7 @@ class BookController @Inject()(
    *
    * @return book-data as json
    */
-  def addBook: Action[AnyContent] = Action.async { implicit request =>
+  def jooqAddBook: Action[AnyContent] = Action.async { implicit request =>
 
     val formData: BookAddForm = BookAddForm.form.bindFromRequest.get
 
@@ -51,7 +51,7 @@ class BookController @Inject()(
     bookRecord.setLanguageId(formData.language_id);
 
     // insert the jOOQ-Record to the database.
-    bookDTO.insertOne(bookRecord) map ({
+    jooqBookDTO.insertOne(bookRecord) map ({
       insertRecord =>
         // show inserted record as json
         Ok(insertRecord.formatJSON());
@@ -63,14 +63,14 @@ class BookController @Inject()(
    *
    * @return success-status
    */
-  def deleteBook: Action[AnyContent] = Action.async { implicit request =>
+  def jooqDeleteBook: Action[AnyContent] = Action.async { implicit request =>
 
     val formData: BookDeleteForm = BookDeleteForm.form.bindFromRequest.get
 
     val bookRecord: BookRecord = new BookRecord();
     bookRecord.setId(formData.id);
 
-    bookDTO.deleteOne(bookRecord) map ({
+    jooqBookDTO.deleteOne(bookRecord) map ({
       deleteStatus =>
         // show delete status
         Ok("OK: " + deleteStatus);

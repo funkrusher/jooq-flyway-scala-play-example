@@ -22,6 +22,7 @@ libraryDependencies ++= Seq(
   "org.jooq" % "jooq-codegen-maven" % jooqVersion,
   "org.jooq" % "jooq-meta" % jooqVersion,
   "org.jooq" % "jooq-scala_2.12" % jooqVersion,
+  "com.typesafe.play" %% "play-slick" % "3.0.0",
    specs2 % Test
 )
 

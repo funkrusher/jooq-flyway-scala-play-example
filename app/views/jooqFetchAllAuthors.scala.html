@@ -9,7 +9,7 @@
 
      <h1>Add author</h1>
 
-     @form(action = helper.CSRF(routes.AuthorController.addAuthor())) {
+     @form(action = helper.CSRF(routes.AuthorController.jooqAddAuthor())) {
        @inputText(authorAddForm("first_name"))
        @inputText(authorAddForm("last_name"))
        <input type="submit" value="Submit">
@@ -17,7 +17,7 @@
 
      <h1>Delete author</h1>
 
-     @form(action = helper.CSRF(routes.AuthorController.deleteAuthor())) {
+     @form(action = helper.CSRF(routes.AuthorController.jooqDeleteAuthor())) {
        @inputText(authorDeleteForm("id"))
        <input type="submit" value="Submit">
      }

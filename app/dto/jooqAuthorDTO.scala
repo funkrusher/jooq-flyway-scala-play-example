@@ -15,7 +15,7 @@ import scala.collection.JavaConverters._
 import scala.concurrent.Future
 
 @Singleton
-class authorDTO @Inject()(db: DB) {
+class jooqAuthorDTO @Inject()(db: DB) {
 
 
   /**
