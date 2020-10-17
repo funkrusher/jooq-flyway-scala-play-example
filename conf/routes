@@ -24,6 +24,7 @@ GET     /jooq/test6                      controllers.TestController.jooqTest6
 # SLICK Test-Routes
 
 GET     /slick/author                     controllers.AuthorController.slickFetchAllAuthors
+GET     /slick/test5                      controllers.TestController.slickTest5
 GET     /slick/test6                      controllers.TestController.slickTest6
 
 

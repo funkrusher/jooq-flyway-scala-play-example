@@ -7,9 +7,6 @@ import java.util
 import java.util.stream.Collectors
 
 import javax.inject.{Inject, Singleton}
-import org.jooq.impl.DSL._
-import org.jooq.scalaextensions.Conversions._
-import org.jooq.{DSLContext, Record, Record3, Result}
 import java.sql.Date
 
 import play.api.db.slick.DatabaseConfigProvider
@@ -21,8 +18,12 @@ import slick.jdbc.JdbcProfile
 import dto.models.AuthorModel
 import generated.Tables.{AUTHOR, BOOK}
 import generated.tables.records.AuthorRecord
-
 import dto.BookRepository
+import play.api.db.slick.HasDatabaseConfig
+import scala.concurrent.ExecutionContext.Implicits.global
+
+import scala.concurrent.ExecutionContext.Implicits.global
+
 
 /**
  * A repository for people.
@@ -33,8 +34,10 @@ import dto.BookRepository
 class AuthorRepository @Inject() (
                                    dbConfigProvider: DatabaseConfigProvider,
                                    bookRepository: BookRepository)(implicit ec: ExecutionContext) {
+
   // We want the JdbcProfile for this provider
-  private val dbConfig = dbConfigProvider.get[JdbcProfile]
+  // it must be defined as protected because we return DBIO as result.
+  protected val dbConfig = dbConfigProvider.get[JdbcProfile]
 
   // These imports are important, the first one brings db into scope, which will let you do the actual db operations.
   // The second one brings the Slick DSL into scope, which lets you define the table and other queries.
@@ -104,6 +107,21 @@ class AuthorRepository @Inject() (
     db.run(innerJoin.result)
   }
 
+
+
+  def fetchByIdAction(id:Int): DBIO[Option[AuthorModel]] = {
+    author.filter(_.id === id).result.headOption
+  }
+  def fetchById(id:Int): Future[Option[AuthorModel]] = {
+    db.run(fetchByIdAction(id));
+  }
+
+  def saveAction(input: AuthorModel): DBIO[AuthorModel] = {
+    ((author returning author.map(_.id) into ((u, insertId) => input.copy(id=insertId))) += input)
+  }
+  def save(input: AuthorModel): Future[AuthorModel] = {
+    db.run(saveAction(input))
+  }
 
 
 }
