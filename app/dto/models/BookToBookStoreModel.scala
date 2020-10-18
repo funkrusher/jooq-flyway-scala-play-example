@@ -1,15 +1,17 @@
 package dto.models
 
-import generated.tables.records.{AuthorRecord, BookRecord}
 import play.api.libs.json.{Json, OFormat}
 
+
 case class BookToBookStoreModel(
-                      name: String,
-                      book_id: Int,
-                      stock: Int
-                    )
+                                 name: String,
+                                 book_id: Int,
+                                 stock: Int
+                               )
 
 object BookToBookStoreModel {
-  implicit val bookToBookStore_format : OFormat[BookToBookStoreModel] = Json.format[BookToBookStoreModel]
+    implicit val bookToBookStore_format: OFormat[BookToBookStoreModel] = Json.format[BookToBookStoreModel]
 }
+
+
 

@@ -1,0 +1,26 @@
+@(output: Html, bookAddForm: Form[BookAddForm], bookDeleteForm: Form[BookDeleteForm])(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+
+@import helper._
+
+@main("Books") {
+
+<h1>List of books:</h1>
+@output
+
+<h1>Add book</h1>
+
+@form(action = helper.CSRF(routes.BookController.addBook())) {
+@inputText(bookAddForm("author_id"))
+@inputText(bookAddForm("title"))
+@inputText(bookAddForm("published_in"))
+@inputText(bookAddForm("language_id"))
+<input type="submit" value="Submit">
+}
+
+<h1>Delete book</h1>
+
+@form(action = helper.CSRF(routes.BookController.deleteBook())) {
+@inputText(bookDeleteForm("id"))
+<input type="submit" value="Submit">
+}
+}

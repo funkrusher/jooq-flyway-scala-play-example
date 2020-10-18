@@ -3,32 +3,23 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index
+GET     /                                controllers.Application.index
 
 # JOOQ Test-Routes
-GET     /jooq/book                       controllers.BookController.jooqFetchAllBooks
-POST    /jooq/book                       controllers.BookController.jooqAddBook
-POST    /jooq/book/delete                controllers.BookController.jooqDeleteBook
+GET     /jooq/book                       controllers.BookController.fetchAllBooks
+POST    /jooq/book                       controllers.BookController.addBook
+POST    /jooq/book/delete                controllers.BookController.deleteBook
 
-GET     /jooq/author                     controllers.AuthorController.jooqFetchAllAuthors
-POST    /jooq/author                     controllers.AuthorController.jooqAddAuthor
-POST    /jooq/author/delete              controllers.AuthorController.jooqDeleteAuthor
+GET     /jooq/author                     controllers.AuthorController.fetchAllAuthors
+POST    /jooq/author                     controllers.AuthorController.addAuthor
+POST    /jooq/author/delete              controllers.AuthorController.deleteAuthor
 
-GET     /jooq/test1                      controllers.TestController.jooqTest1
-GET     /jooq/test2                      controllers.TestController.jooqTest2
-GET     /jooq/test3                      controllers.TestController.jooqTest3
-GET     /jooq/test4                      controllers.TestController.jooqTest4
-GET     /jooq/test5                      controllers.TestController.jooqTest5
-GET     /jooq/test6                      controllers.TestController.jooqTest6
-
-# SLICK Test-Routes
-
-GET     /slick/author                     controllers.AuthorController.slickFetchAllAuthors
-GET     /slick/test5                      controllers.TestController.slickTest5
-GET     /slick/test6                      controllers.TestController.slickTest6
-
-
-
+GET     /jooq/test1                      controllers.TestController.test1
+GET     /jooq/test2                      controllers.TestController.test2
+GET     /jooq/test3                      controllers.TestController.test3
+GET     /jooq/test4                      controllers.TestController.test4
+GET     /jooq/test5                      controllers.TestController.test5
+GET     /jooq/test6                      controllers.TestController.test6
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+GET     /assets/*file                    controllers.Assets.versioned(path="/public", file: Asset)

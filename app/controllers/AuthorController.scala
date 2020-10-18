@@ -1,8 +1,7 @@
 package controllers
 
 import database.DB
-import dto.jooqAuthorDTO
-import dto.AuthorRepository
+import dto.AuthorDTO
 import generated.tables.records.AuthorRecord
 import javax.inject.{Inject, Singleton}
 import play.api.i18n.I18nSupport
@@ -13,118 +12,83 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 @Singleton
 class AuthorController @Inject()(
-                                cc: ControllerComponents,
-                                db: DB,
-                                jooqAuthorDTO: jooqAuthorDTO,
-                                authorRepository: AuthorRepository) extends AbstractController(cc) with I18nSupport {
+                                  cc: ControllerComponents,
+                                  db: DB,
+                                  authorDTO: AuthorDTO) extends AbstractController(cc) with I18nSupport {
 
-  /**
-   * fetch all authors and show them as view
-   *
-   * @return authors-view
-   */
-  def jooqFetchAllAuthors: Action[AnyContent] = Action.async { implicit request =>
+    /**
+     * fetch all authors and show them as view
+     *
+     * @return authors-view
+     */
+    def fetchAllAuthors: Action[AnyContent] = Action.async { implicit request =>
 
-    val t0 = System.currentTimeMillis()
+        val t0 = System.currentTimeMillis()
 
-    // fetch all authors from the database
-    val result = for {
-      all <- jooqAuthorDTO.fetchAll()
-    } yield all
+        // fetch all authors from the database
+        val result = for {
+            all <- authorDTO.fetchAll()
+        } yield all
 
-    result.map({
-      authors =>
-        // render html-view (transform the fetched jOOQ-Records to HTML)
-        val t1 = System.currentTimeMillis()
-        println("Elapsed time: " + (t1 - t0) + "ms")
+        result.map({
+            authors =>
+                // render html-view (transform the fetched jOOQ-Records to HTML)
+                val t1 = System.currentTimeMillis()
+                println("Elapsed time: " + (t1 - t0) + "ms")
 
-        // memory info
-        val mb = 1024*1024
-        val runtime = Runtime.getRuntime
-        println("ALL RESULTS IN MB")
-        println("** Used Memory:  " + (runtime.totalMemory - runtime.freeMemory) / mb)
-        println("** Free Memory:  " + runtime.freeMemory / mb)
-        println("** Total Memory: " + runtime.totalMemory / mb)
-        println("** Max Memory:   " + runtime.maxMemory / mb)
-
-
-        Ok(views.html.jooqFetchAllAuthors(Html(authors.formatHTML()), AuthorAddForm.form, AuthorDeleteForm.form))
-    })
-  }
-
-  /**
-   * fetch all authors and show them as view
-   *
-   * @return authors-view
-   */
-  def slickFetchAllAuthors: Action[AnyContent] = Action.async { implicit request =>
-
-    val t0 = System.currentTimeMillis()
-
-    // fetch all authors from the database
-    val result = for {
-      all <- authorRepository.fetchAll()
-    } yield all
-
-    result.map({
-      authors =>
-        // render html-view (transform the fetched jOOQ-Records to HTML)
-        val t1 = System.currentTimeMillis()
-        println("Elapsed time: " + (t1 - t0) + "ms")
-
-        // memory info
-        val mb = 1024*1024
-        val runtime = Runtime.getRuntime
-        println("ALL RESULTS IN MB")
-        println("** Used Memory:  " + (runtime.totalMemory - runtime.freeMemory) / mb)
-        println("** Free Memory:  " + runtime.freeMemory / mb)
-        println("** Total Memory: " + runtime.totalMemory / mb)
-        println("** Max Memory:   " + runtime.maxMemory / mb)
-
-        Ok(views.html.slickFetchAllAuthors(Html(authors.toString), AuthorAddForm.form, AuthorDeleteForm.form))
-    })
-  }
+                // memory info
+                val mb = 1024 * 1024
+                val runtime = Runtime.getRuntime
+                println("ALL RESULTS IN MB")
+                println("** Used Memory:  " + (runtime.totalMemory - runtime.freeMemory) / mb)
+                println("** Free Memory:  " + runtime.freeMemory / mb)
+                println("** Total Memory: " + runtime.totalMemory / mb)
+                println("** Max Memory:   " + runtime.maxMemory / mb)
 
 
-  /**
-   * add a new author to the list
-   *
-   * @return author-data as json
-   */
-  def jooqAddAuthor: Action[AnyContent] = Action.async { implicit request =>
+                Ok(views.html.fetchAllAuthors(Html(authors.formatHTML()), AuthorAddForm.form,
+                    AuthorDeleteForm.form))
+        })
+    }
 
-    val formData: AuthorAddForm = AuthorAddForm.form.bindFromRequest.get
+    /**
+     * add a new author to the list
+     *
+     * @return author-data as json
+     */
+    def addAuthor: Action[AnyContent] = Action.async { implicit request =>
 
-    // put the form-data into a jOOQ-Record.
-    val authorRecord: AuthorRecord = new AuthorRecord();
-    authorRecord.setFirstName(formData.first_name);
-    authorRecord.setLastName(formData.last_name);
+        val formData: AuthorAddForm = AuthorAddForm.form.bindFromRequest.get
 
-    // insert the jOOQ-Record to the database.
-    jooqAuthorDTO.insertOne(authorRecord) map ({
-      insertRecord =>
-        // show inserted record as json
-        Ok(insertRecord.formatJSON());
-    });
-  }
+        // put the form-data into a jOOQ-Record.
+        val authorRecord: AuthorRecord = new AuthorRecord();
+        authorRecord.setFirstName(formData.first_name);
+        authorRecord.setLastName(formData.last_name);
 
-  /**
-   * delete a author from the list
-   *
-   * @return success-status
-   */
-  def jooqDeleteAuthor: Action[AnyContent] = Action.async { implicit request =>
+        // insert the jOOQ-Record to the database.
+        authorDTO.insertOne(authorRecord) map ({
+            insertRecord =>
+                // show inserted record as json
+                Ok(insertRecord.formatJSON());
+        });
+    }
 
-    val formData: AuthorDeleteForm = AuthorDeleteForm.form.bindFromRequest.get
+    /**
+     * delete a author from the list
+     *
+     * @return success-status
+     */
+    def deleteAuthor: Action[AnyContent] = Action.async { implicit request =>
 
-    val authorRecord: AuthorRecord = new AuthorRecord();
-    authorRecord.setId(formData.id);
+        val formData: AuthorDeleteForm = AuthorDeleteForm.form.bindFromRequest.get
 
-    jooqAuthorDTO.deleteOne(authorRecord) map ({
-      deleteStatus =>
-        // show delete status
-        Ok("OK: " + deleteStatus);
-    });
-  }
+        val authorRecord: AuthorRecord = new AuthorRecord();
+        authorRecord.setId(formData.id);
 
+        authorDTO.deleteOne(authorRecord) map ({
+            deleteStatus =>
+                // show delete status
+                Ok("OK: " + deleteStatus);
+        });
+    }
 }
